@@ -4,6 +4,8 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 import LoginForm from './components/LoginForm'
 import ErrorMessage from './components/ErrorMessage'
+import Notification from './components/Notification'
+import './index.css'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -14,6 +16,7 @@ const App = () => {
   const [blogTitle, setBlogTitle] = useState('')
   const [blogAuthor, setBlogAuthor] = useState('')
   const [blogURL, setBlogURL] = useState('')
+  const [notificationMessage, setNotificationMessage] = useState(null)
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -26,6 +29,7 @@ const App = () => {
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       setUser(user)
+      blogService.setToken(user.token)
     }
   }, [])
 
@@ -42,8 +46,8 @@ const App = () => {
       setUser(user)
       setUsername('')
       setPassword('')
-    } catch (exception) {
-      setErrorMessage('Wrong credentials')
+    } catch (error) {
+      setErrorMessage(error.response.data.error)
       setTimeout(() => {
         setErrorMessage(null)
       }, 5000)
@@ -53,6 +57,10 @@ const App = () => {
   const handleLogout = async () => {
     setUser(null)
     window.localStorage.removeItem('loggedBlogAppUser')
+    setNotificationMessage('You have logged out')
+    setTimeout(() => {
+      setNotificationMessage(null)
+    }, 5000);
   }
 
   const addBlog = async (event) => {
@@ -68,9 +76,8 @@ const App = () => {
       setBlogTitle('')
       setBlogAuthor('')
       setBlogURL('')
-      
       setBlogs(blogs.concat(returnedBlog))
-
+      setNotificationMessage(`A new blog ${returnedBlog.title} by ${returnedBlog.author} added.`)
     } catch (error) {
       setErrorMessage(error.response.data.error)
       setTimeout(() => {
@@ -80,6 +87,7 @@ const App = () => {
   }
   return (
     <div>
+      <Notification message={notificationMessage}/>
       <ErrorMessage message={errorMessage}/>
       {
         user === null 
