@@ -68,8 +68,18 @@ const App = () => {
     try {
       const returnedBlog = await  blogService.create(newBlog)
       blogFormRef.current.toggleVisibility()
+      const id = returnedBlog.user
+      returnedBlog.user={
+        id: id,
+        name: user.name,
+        username: user.username,
+      }
+      console.log(returnedBlog)
       setBlogs(blogs.concat(returnedBlog))
       setNotificationMessage(`A new blog ${returnedBlog.title} by ${returnedBlog.author} added.`)
+      setTimeout(() => {
+        setNotificationMessage(null)
+      }, 5000)
     } catch (error) {
       setErrorMessage(error.response.data.error)
       setTimeout(() => {
@@ -87,6 +97,20 @@ const App = () => {
       setNotificationMessage(`Blog updated`)
 
     } catch (error) {
+      setErrorMessage(error.response.data.error)
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+    }
+  }
+
+  const deleteBlog = async (blog) => {
+    try {
+      if (window.confirm(`Delete ${blog.title} by ${blog.author}?`)) {      
+        const response = await blogService.deleteBlog(blog.id)
+        setBlogs(blogs.filter(b => b.id !== blog.id))
+      }
+    } catch (error){
       setErrorMessage(error.response.data.error)
       setTimeout(() => {
         setErrorMessage(null)
@@ -115,7 +139,7 @@ const App = () => {
           <p>{user.name} logged in</p> <button onClick={handleLogout}>logout</button>
 
           {blogs.map(blog =>
-            <Blog key={blog.id} blog={blog} updateBlog={updateBlog}/>
+            <Blog key={blog.id} blog={blog} updateBlog={updateBlog} deleteBlog={deleteBlog} user={user}/>
           )}
         </div>
       }
