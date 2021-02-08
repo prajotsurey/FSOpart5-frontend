@@ -83,7 +83,7 @@ const App = () => {
       const returnedBlog = await blogService.update(id, updatedBlog)
       const newBlogs = blogs.filter(blog => blog.id !== returnedBlog.id)
       returnedBlog.user = user
-      setBlogs(newBlogs.concat(returnedBlog))
+      setBlogs(newBlogs.concat(returnedBlog).sort((a,b) => b.likes - a.likes ))
       setNotificationMessage(`Blog updated`)
 
     } catch (error) {
