@@ -1,14 +1,26 @@
-import React from 'react'
+import React, {useState} from 'react'
 
-const NoteForm = ({
-  blogTitle,
-  setBlogTitle,
-  blogAuthor,
-  setBlogAuthor,
-  blogURL,
-  setBlogURL,
-  addBlog
-}) => {
+const BlogForm = ({ createBlog }) => {
+  const [blogTitle, setBlogTitle] = useState('')
+  const [blogAuthor, setBlogAuthor] = useState('')
+  const [blogURL, setBlogURL] = useState('')
+
+  const addBlog = (event) => {
+    event.preventDefault()
+    
+    createBlog({
+      title: blogTitle,
+      author: blogAuthor,
+      url: blogURL
+    })
+    
+    setBlogTitle('')
+    setBlogAuthor('')
+    setBlogURL('')
+
+
+  }
+
   return(
     <div>
       <h2>create new</h2>
@@ -46,4 +58,4 @@ const NoteForm = ({
   )
 }
 
-export default NoteForm
+export default BlogForm
