@@ -8,6 +8,7 @@ import Notification from './components/Notification'
 import './index.css'
 import BlogForm from './components/BlogForm'
 import Toggleable from './components/Toggleable'
+import Axios from 'axios'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -77,6 +78,22 @@ const App = () => {
     }
   }
 
+  const updateBlog = async (id, updatedBlog, user) => {
+    try {
+      const returnedBlog = await blogService.update(id, updatedBlog)
+      const newBlogs = blogs.filter(blog => blog.id !== returnedBlog.id)
+      returnedBlog.user = user
+      setBlogs(newBlogs.concat(returnedBlog))
+      setNotificationMessage(`Blog updated`)
+
+    } catch (error) {
+      setErrorMessage(error.response.data.error)
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+    }
+  }
+
   return (
     <div>
       <Notification message={notificationMessage}/>
@@ -98,7 +115,7 @@ const App = () => {
           <p>{user.name} logged in</p> <button onClick={handleLogout}>logout</button>
 
           {blogs.map(blog =>
-            <Blog key={blog.id} blog={blog} />
+            <Blog key={blog.id} blog={blog} updateBlog={updateBlog}/>
           )}
         </div>
       }

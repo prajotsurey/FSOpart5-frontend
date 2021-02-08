@@ -1,7 +1,6 @@
 import React, {useState} from 'react'
-import blogs from '../services/blogs'
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, updateBlog }) => {
   const [showDetails, setShowDetails] = useState(false)
 
   const blogStyle = { 
@@ -9,6 +8,19 @@ const Blog = ({ blog }) => {
     border: 'solid',
     borderWidth: 1,
     marginBottom: 5
+  }
+
+  const clickHandler = () => {
+    // console.log(blog)
+    const updatedBlog = {
+      title:blog.title,
+      url:blog.url,
+      author:blog.author,
+      user:blog.user.id,
+      likes: blog.likes + 1
+    } 
+    // console.log(updatedBlog)
+    updateBlog(blog.id, updatedBlog, blog.user)
   }
 
   return(
@@ -25,7 +37,7 @@ const Blog = ({ blog }) => {
         <div>
           <div>{blog.url}</div>
           <div> 
-            0 likes <button>like</button>
+            {blog.likes} likes <button onClick={clickHandler}>like</button>
           </div>
           <div>{blog.user.username}</div> 
         </div>
