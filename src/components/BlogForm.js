@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
 const BlogForm = ({ createBlog }) => {
   const [blogTitle, setBlogTitle] = useState('')
@@ -7,13 +7,13 @@ const BlogForm = ({ createBlog }) => {
 
   const addBlog = (event) => {
     event.preventDefault()
-    
+
     createBlog({
       title: blogTitle,
       author: blogAuthor,
       url: blogURL
     })
-    
+
     setBlogTitle('')
     setBlogAuthor('')
     setBlogURL('')
@@ -24,36 +24,36 @@ const BlogForm = ({ createBlog }) => {
   return(
     <div>
       <h2>create new</h2>
-          <form onSubmit={addBlog}>
-            <p>
+      <form onSubmit={addBlog}>
+        <p>
             title:
-            <input
-              type='text'
-              name='blogtitle'
-              value={blogTitle}
-              onChange={({target})=> {setBlogTitle(target.value)}}
-            />
-            </p>
-            <p>
+          <input
+            type='text'
+            name='blogtitle'
+            value={blogTitle}
+            onChange={({ target }) => {setBlogTitle(target.value)}}
+          />
+        </p>
+        <p>
             author:
-            <input
-              type='text'
-              name='blogauthor'
-              value={blogAuthor}
-              onChange={({target})=> {setBlogAuthor(target.value)}}
-            />
-            </p>
-            <p>
+          <input
+            type='text'
+            name='blogauthor'
+            value={blogAuthor}
+            onChange={({ target }) => {setBlogAuthor(target.value)}}
+          />
+        </p>
+        <p>
             url:
-            <input
-              type='text'
-              name='blogurl'
-              value={blogURL}
-              onChange={({target})=> {setBlogURL(target.value)}}
-            />
-            </p>         
-            <button type='submit'>Create</button>
-          </form>
+          <input
+            type='text'
+            name='blogurl'
+            value={blogURL}
+            onChange={({ target }) => {setBlogURL(target.value)}}
+          />
+        </p>
+        <button type='submit'>Create</button>
+      </form>
     </div>
   )
 }
