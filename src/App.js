@@ -22,7 +22,7 @@ const App = () => {
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
-    )  
+    )
   }, [])
 
   useEffect(() => {
@@ -61,7 +61,7 @@ const App = () => {
     setNotificationMessage('You have logged out')
     setTimeout(() => {
       setNotificationMessage(null)
-    }, 5000);
+    }, 5000)
   }
 
   const addBlog = async (newBlog) => {
@@ -94,7 +94,7 @@ const App = () => {
       const newBlogs = blogs.filter(blog => blog.id !== returnedBlog.id)
       returnedBlog.user = user
       setBlogs(newBlogs.concat(returnedBlog).sort((a,b) => b.likes - a.likes ))
-      setNotificationMessage(`Blog updated`)
+      setNotificationMessage('Blog updated')
 
     } catch (error) {
       setErrorMessage(error.response.data.error)
@@ -106,7 +106,7 @@ const App = () => {
 
   const deleteBlog = async (blog) => {
     try {
-      if (window.confirm(`Delete ${blog.title} by ${blog.author}?`)) {      
+      if (window.confirm(`Delete ${blog.title} by ${blog.author}?`)) {
         const response = await blogService.deleteBlog(blog.id)
         setBlogs(blogs.filter(b => b.id !== blog.id))
       }
@@ -123,25 +123,25 @@ const App = () => {
       <Notification message={notificationMessage}/>
       <ErrorMessage message={errorMessage}/>
       {
-        user === null 
-        ? <LoginForm 
-        handleLogin={handleLogin} 
-        username={username} 
-        setUsername={setUsername} 
-        password={password} 
-        setPassword={setPassword}
-        />
-        : <div>
-          <Toggleable buttonLabel = 'new blog' ref={blogFormRef}>
-            <BlogForm createBlog = {addBlog} />
-          </Toggleable>
-          <h2>blogs</h2>
-          <p>{user.name} logged in</p> <button onClick={handleLogout}>logout</button>
+        user === null
+          ? <LoginForm
+            handleLogin={handleLogin}
+            username={username}
+            setUsername={setUsername}
+            password={password}
+            setPassword={setPassword}
+          />
+          : <div>
+            <Toggleable buttonLabel = 'new blog' ref={blogFormRef}>
+              <BlogForm createBlog = {addBlog} />
+            </Toggleable>
+            <h2>blogs</h2>
+            <p>{user.name} logged in</p> <button onClick={handleLogout}>logout</button>
 
-          {blogs.map(blog =>
-            <Blog key={blog.id} blog={blog} updateBlog={updateBlog} deleteBlog={deleteBlog} user={user}/>
-          )}
-        </div>
+            {blogs.map(blog =>
+              <Blog key={blog.id} blog={blog} updateBlog={updateBlog} deleteBlog={deleteBlog} user={user}/>
+            )}
+          </div>
       }
     </div>
   )
