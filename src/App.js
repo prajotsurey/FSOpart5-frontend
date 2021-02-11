@@ -8,7 +8,6 @@ import Notification from './components/Notification'
 import './index.css'
 import BlogForm from './components/BlogForm'
 import Toggleable from './components/Toggleable'
-import Axios from 'axios'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -95,6 +94,9 @@ const App = () => {
       returnedBlog.user = user
       setBlogs(newBlogs.concat(returnedBlog).sort((a,b) => b.likes - a.likes ))
       setNotificationMessage('Blog updated')
+      setTimeout(() => {
+        setNotificationMessage(null)
+      }, 5000)
 
     } catch (error) {
       setErrorMessage(error.response.data.error)
@@ -107,7 +109,7 @@ const App = () => {
   const deleteBlog = async (blog) => {
     try {
       if (window.confirm(`Delete ${blog.title} by ${blog.author}?`)) {
-        const response = await blogService.deleteBlog(blog.id)
+        await blogService.deleteBlog(blog.id)
         setBlogs(blogs.filter(b => b.id !== blog.id))
       }
     } catch (error){

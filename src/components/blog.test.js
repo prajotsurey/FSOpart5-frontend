@@ -56,7 +56,7 @@ describe('<Togglable />', () => {
     )
   })
 
-  test('updateBlog is called twice when like button is clickec twice', () => {
+  test('updateBlog is called twice when like button is clicked twice', () => {
     const button = component.getByText('view')
     fireEvent.click(button)
     const likeButton = component.container.querySelector('.likeButton')
